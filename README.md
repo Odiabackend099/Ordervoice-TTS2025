@@ -5,10 +5,12 @@
 **OrderVoice AI** is an AI receptionist SaaS platform for Nigerian businesses, built by **ODIADEV AI LTD**.
 
 This repository contains the complete marketing website with:
-- Landing page
+- Landing page with AI chat widget
 - Pricing page
 - Demo page
 - Contact page
+- Ultra-low latency voice streaming system
+- AI-powered floating chat widget
 - SEO optimization
 
 ---
