@@ -1,18 +1,14 @@
-# Environment variables with API keys
+# Environment variables - NEVER commit
 .env
 .env.local
-.env.production
+.env.*.local
 
-# Node modules
+# API keys
+*_API_KEY
+*_SECRET
+
+# Node modules  
 node_modules/
-
-# Build outputs
-dist/
-build/
-.vercel/
-
-# Logs
-*.log
 npm-debug.log*
 
 # OS files
@@ -25,7 +21,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Temporary files
-*.tmp
-.cache/
-
+# Logs
+logs/
+*.log
