@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You! - OrderVoice AI</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .checkmark::after {
+            content: "✓";
+            font-size: 3rem;
+            color: white;
+            line-height: 80px;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        .info-box h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            color: #555;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .contact-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 3rem 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .contact-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="checkmark"></div>
+
+        <h1>We Got Your Message!</h1>
+
+        <p class="subtitle">
+            Thank you for your interest in OrderVoice AI. Your trial request has been received successfully.
+        </p>
+
+        <div class="info-box">
+            <h3>What Happens Next?</h3>
+            <ul>
+                <li>We'll contact you within 1 hour (during business hours)</li>
+                <li>Quick 15-minute consultation about your needs</li>
+                <li>Custom OrderVoice setup for your business</li>
+                <li>Go live with your AI receptionist in 24 hours</li>
+                <li>7-day free trial starts - no credit card needed</li>
+            </ul>
+        </div>
+
+        <p style="color: #888; margin-top: 2rem;">
+            <strong>Need immediate assistance?</strong><br>
+            Reach out to us directly:
+        </p>
+
+        <div class="contact-options">
+            <a href="https://wa.me/2348141995397?text=Hi,%20I%20just%20submitted%20a%20trial%20request"
+               class="btn btn-primary" target="_blank">
+               💬 WhatsApp Us
+            </a>
+
+            <a href="index.html" class="btn btn-secondary">
+                🏠 Back to Home
+            </a>
+        </div>
+
+        <p style="margin-top: 2rem; color: #999; font-size: 0.9rem;">
+            Check your email (including spam folder) for confirmation.<br>
+            Our email: <a href="mailto:support@ordervoice.ai" style="color: #3b82f6;">support@ordervoice.ai</a>
+        </p>
+    </div>
+
+    <script>
+        // Optional: Track form submission
+        console.log('Form submission successful - redirected to success page');
+
+        // Optional: Auto-redirect to home after 30 seconds
+        setTimeout(() => {
+            const redirectMsg = document.createElement('p');
+            redirectMsg.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e3a8a; color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 0.9rem;';
+            redirectMsg.innerHTML = 'Redirecting to homepage in 5 seconds... <a href="index.html" style="color: #60a5fa; text-decoration: underline;">Go now</a>';
+            document.body.appendChild(redirectMsg);
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 5000);
+        }, 25000);
+    </script>
+</body>
+</html>

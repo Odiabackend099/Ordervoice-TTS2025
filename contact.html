@@ -200,10 +200,13 @@
             <!-- Contact Form -->
             <div class="contact-form">
                 <h2>Start Your Free Trial</h2>
-                <form action="https://formsubmit.co/support@ordervoice.ai" method="POST">
-                    <input type="hidden" name="_subject" value="New OrderVoice AI Trial Request">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
+                <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
+                    <input type="hidden" name="form-name" value="contact">
+                    <input type="hidden" name="subject" value="New OrderVoice AI Trial Request">
+                    <!-- Honeypot field for spam protection -->
+                    <p style="display:none;">
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
                     
                     <div class="form-group">
                         <label for="name">Full Name *</label>

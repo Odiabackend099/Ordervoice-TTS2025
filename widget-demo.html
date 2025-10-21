@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Demo - OrderVoice AI | See Our Embeddable AI Assistant</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="See OrderVoice AI's embeddable chat widget in action. Add an AI-powered customer service assistant to any website with a simple code snippet.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ordervoice.ai/widget-demo.html" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            position: fixed; top: 0; width: 100%; background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(20px); z-index: 1000; padding: 1rem 0;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; display: flex;
+            justify-content: space-between; align-items: center; padding: 0 2rem;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; color: white; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #60a5fa; }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            color: white; padding: 8rem 2rem 4rem; text-align: center;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto; opacity: 0.9; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+
+        .demo-section {
+            background: white; border-radius: 20px; padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 3rem;
+        }
+        .demo-section h2 {
+            color: #1e3a8a; margin-bottom: 1.5rem; font-size: 2rem;
+        }
+
+        .live-preview {
+            background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+            border-radius: 20px; padding: 3rem;
+            margin: 3rem 0; position: relative;
+            border: 3px dashed #3b82f6;
+        }
+        .live-preview::before {
+            content: '👇 Widget appears in bottom-right corner';
+            position: absolute; top: -15px; left: 50%;
+            transform: translateX(-50%);
+            background: #3b82f6; color: white;
+            padding: 0.5rem 1.5rem; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 600;
+        }
+        .website-mockup {
+            background: white; border-radius: 15px;
+            padding: 3rem; min-height: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .mockup-header {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem;
+            padding-bottom: 1rem; border-bottom: 2px solid #e9ecef;
+        }
+        .mockup-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #dee2e6;
+        }
+        .mockup-content h3 {
+            color: #1e3a8a; margin-bottom: 1rem;
+        }
+        .mockup-content p {
+            color: #666; margin-bottom: 1rem; line-height: 1.8;
+        }
+
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem; margin: 3rem 0;
+        }
+        .feature-card {
+            background: #f8f9fa; padding: 2rem; border-radius: 15px;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 3rem; margin-bottom: 1rem;
+        }
+        .feature-card h3 {
+            color: #1e3a8a; margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1e293b; color: #e2e8f0;
+            padding: 2rem; border-radius: 15px;
+            overflow-x: auto; margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem; line-height: 1.6;
+        }
+        .code-comment { color: #94a3b8; }
+        .code-tag { color: #f472b6; }
+        .code-attr { color: #60a5fa; }
+        .code-string { color: #34d399; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white; padding: 1rem 2rem; border-radius: 50px;
+            text-decoration: none; font-weight: 600;
+            display: inline-block; transition: transform 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed; bottom: 20px; right: 20px;
+            z-index: 9999;
+        }
+        .chat-button {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border: none; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+        .chat-button-icon {
+            font-size: 1.8rem;
+        }
+        .chat-window {
+            position: fixed; bottom: 100px; right: 20px;
+            width: 380px; height: 600px;
+            background: white; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        }
+        .chat-window.open {
+            display: flex;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white; padding: 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header h3 {
+            font-size: 1.1rem; margin: 0;
+        }
+        .chat-close {
+            background: none; border: none; color: white;
+            font-size: 1.5rem; cursor: pointer;
+        }
+        .chat-messages {
+            flex: 1; overflow-y: auto; padding: 1.5rem;
+            background: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 1rem; display: flex; gap: 0.5rem;
+        }
+        .message.bot {
+            justify-content: flex-start;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .message-bubble {
+            max-width: 70%; padding: 1rem;
+            border-radius: 15px; line-height: 1.5;
+        }
+        .message.bot .message-bubble {
+            background: white; color: #333;
+            border-bottom-left-radius: 5px;
+        }
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white; border-bottom-right-radius: 5px;
+        }
+        .chat-input-area {
+            padding: 1rem; background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex; gap: 0.5rem;
+        }
+        .chat-input {
+            flex: 1; padding: 0.8rem;
+            border: 2px solid #e9ecef; border-radius: 25px;
+            font-family: inherit; font-size: 0.9rem;
+        }
+        .chat-input:focus {
+            outline: none; border-color: #3b82f6;
+        }
+        .chat-send {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white; border: none; padding: 0.8rem 1.5rem;
+            border-radius: 25px; cursor: pointer;
+            font-weight: 600; transition: transform 0.2s;
+        }
+        .chat-send:hover {
+            transform: scale(1.05);
+        }
+        .typing-indicator {
+            display: none; padding: 1rem;
+            color: #666; font-style: italic;
+        }
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .footer {
+            background: #1B5E20; color: white; padding: 3rem 0 1rem; margin-top: 4rem;
+        }
+        .footer-content {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+        }
+        .footer h4 { color: #25D366; margin-bottom: 1rem; }
+        .footer a { color: white; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .chat-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">OrderVoice AI</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="demo.html">Try Demo</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>AI Chat Widget Demo</h1>
+        <p>See how OrderVoice AI's embeddable chat widget works on any website. Click the button in the bottom-right corner to start a conversation.</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Live Preview -->
+        <div class="live-preview">
+            <div class="website-mockup">
+                <div class="mockup-header">
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                </div>
+                <div class="mockup-content">
+                    <h3>Welcome to Your Business Website</h3>
+                    <p>
+                        This is a sample business website showing how OrderVoice AI's chat widget integrates seamlessly.
+                        The widget appears as a floating button in the bottom-right corner of your page.
+                    </p>
+                    <p>
+                        Your customers can click it anytime to ask questions, book appointments,
+                        get pricing information, or connect with your team - all powered by AI that sounds
+                        completely natural.
+                    </p>
+                    <p>
+                        The AI assistant knows your business hours, services, pricing, and can
+                        intelligently route complex inquiries to your human team. It works 24/7,
+                        even when your office is closed.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="demo-section">
+            <h2>Widget Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Responses</h3>
+                    <p>AI answers customer questions immediately, 24/7</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Customizable</h3>
+                    <p>Match your brand colors, logo, and messaging</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile-Friendly</h3>
+                    <p>Works perfectly on all devices and screen sizes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Smart Routing</h3>
+                    <p>Escalates complex issues to your human team</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics</h3>
+                    <p>Track conversations, leads, and customer insights</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure</h3>
+                    <p>Enterprise-grade security and data protection</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Code -->
+        <div class="demo-section">
+            <h2>Easy Integration</h2>
+            <p>Add the OrderVoice AI widget to your website with just 3 lines of code:</p>
+
+            <div class="code-block">
+<span class="code-comment"><!-- Add this code before the closing &lt;/body&gt; tag --></span>
+<span class="code-tag">&lt;script</span> <span class="code-attr">src</span>=<span class="code-string">"https://cdn.ordervoice.ai/widget.js"</span><span class="code-tag">&gt;&lt;/script&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>
+  OrderVoiceWidget.init({
+    <span class="code-attr">businessId</span>: <span class="code-string">'your_business_id'</span>,
+    <span class="code-attr">position</span>: <span class="code-string">'bottom-right'</span>,
+    <span class="code-attr">primaryColor</span>: <span class="code-string">'#3b82f6'</span>,
+    <span class="code-attr">agentName</span>: <span class="code-string">'Lexi'</span>
+  });
+<span class="code-tag">&lt;/script&gt;</span>
+            </div>
+
+            <p style="margin-top: 2rem; color: #666;">
+                That's it! Your AI-powered chat widget will be live and ready to assist customers.
+                We handle all the backend infrastructure, AI training, and maintenance.
+            </p>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="demo-section">
+            <h2>Perfect For:</h2>
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="padding: 1rem; background: #f8f9fa; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                    ✅ <strong>Service Businesses:</strong> Law firms, clinics, consulting agencies
+                </li>
+                <li style="padding: 1rem; background: #f8f9fa; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                    ✅ <strong>E-commerce:</strong> Product recommendations, order tracking, FAQs
+                </li>
+                <li style="padding: 1rem; background: #f8f9fa; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                    ✅ <strong>SaaS Companies:</strong> Onboarding support, feature explanations
+                </li>
+                <li style="padding: 1rem; background: #f8f9fa; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                    ✅ <strong>Real Estate:</strong> Property inquiries, viewing bookings
+                </li>
+            </ul>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align: center; margin-top: 4rem; padding: 3rem; background: linear-gradient(135deg, #1e3a8a, #3b82f6); border-radius: 20px; color: white;">
+            <h2 style="margin-bottom: 1rem;">Ready to Add This to Your Website?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+                Start your 7-day free trial. No credit card required. Setup takes 15 minutes.
+            </p>
+            <a href="contact.html" class="btn-primary" style="background: white; color: #1e3a8a;">
+                Get Your Widget →
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>OrderVoice AI</h4>
+                <p>ODIADEV AI LTD</p>
+                <p>support@ordervoice.ai</p>
+                <p>+234 814 199 5397</p>
+            </div>
+            <div>
+                <h4>Product</h4>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="pricing.html">Pricing</a></p>
+                <p><a href="demo.html">Try Demo</a></p>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <p><a href="contact.html">Contact Us</a></p>
+                <p><a href="https://wa.me/2348141995397">WhatsApp</a></p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);">
+            <p>&copy; 2025 ODIADEV AI LTD. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chat Widget (Demo) -->
+    <div class="chat-widget">
+        <button class="chat-button" id="chatButton">
+            <span class="chat-button-icon">💬</span>
+        </button>
+
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>OrderVoice AI Assistant</h3>
+                <button class="chat-close" id="chatClose">×</button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-bubble">
+                        👋 Hello! I'm Lexi, your AI assistant. How can I help you today?
+                    </div>
+                </div>
+                <div class="message bot">
+                    <div class="message-bubble">
+                        Try asking me about:<br>
+                        • Our pricing plans<br>
+                        • How to get started<br>
+                        • Industry use cases<br>
+                        • Scheduling a demo
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                Lexi is typing...
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="chat-send" id="chatSend">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat Widget Demo Functionality
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatClose = document.getElementById('chatClose');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Toggle chat window
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if (chatWindow.classList.contains('open')) {
+                chatInput.focus();
+            }
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWindow.classList.remove('open');
+        });
+
+        // Send message
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            typingIndicator.classList.add('active');
+
+            // Simulate AI response
+            setTimeout(() => {
+                typingIndicator.classList.remove('active');
+                const response = getAIResponse(message);
+                addMessage(response, 'bot');
+            }, 1500);
+        }
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+
+            if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return 'Our pricing starts at ₦40,000/month for 100 calls. We have 3 plans: Starter, Pro, and Business. Would you like me to send you the full pricing details?';
+            } else if (lowerMessage.includes('demo') || lowerMessage.includes('try')) {
+                return 'Great! You can try a live demo right now by calling +234 814 199 5397 or messaging us on WhatsApp. Want me to send you the WhatsApp link?';
+            } else if (lowerMessage.includes('start') || lowerMessage.includes('setup')) {
+                return 'Getting started is easy! We can have your AI receptionist live in 24 hours. Just fill out our contact form and we\'ll reach out within 1 hour to begin setup.';
+            } else if (lowerMessage.includes('industry') || lowerMessage.includes('business')) {
+                return 'OrderVoice AI works great for law firms, medical clinics, real estate agencies, logistics companies, and professional services. What industry is your business in?';
+            } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return 'Hello! 👋 I\'m here to help you learn about OrderVoice AI. What would you like to know?';
+            } else {
+                return 'That\'s a great question! For detailed information, I\'d recommend chatting with our team on WhatsApp (+234 814 199 5397) or scheduling a call. They can give you personalized answers. Would you like me to connect you?';
+            }
+        }
+    </script>
+</body>
+</html>
