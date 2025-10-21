@@ -2654,17 +2654,19 @@
             voiceIndicator.textContent = '⏳';
             
             try {
-                // Create conversation session with ODIA API
-                const sessionResponse = await fetch('https://api.odia.dev/v1/agents/' + getAgentId(currentAgent) + '/conversations', {
+                // Create conversation session with Supabase API
+                const sessionResponse = await fetch('https://ectphyvfbkwaawtnzrlo.supabase.co/functions/v1/create-conversation-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdHBoeXZmYmt3YWF3dG56cmxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNTYzMDAsImV4cCI6MjA3MTYzMjMwMH0.X94YQtlWmFH3qoiVVpMOzIzJx81Nt4vvAyeCwpxLJAQ',
                         'Authorization': 'Bearer odia_prod_key_2024_atlas_lexi_v1'
                     },
                     body: JSON.stringify({
+                        agent_id: getAgentId(currentAgent),
                         user_id: generateUserId(),
                         language: selectedLanguage,
-                        session_config: {
+                        initial_context: {
                             max_duration: currentAgent === 'atlas' ? 2700 : 1800,
                             enable_analytics: true,
                             enable_payments: true
@@ -2872,17 +2874,21 @@
 
         function trackAgentSelection(agentType) {
             // Track agent selection for analytics
-            fetch('https://api.odia.dev/v1/analytics/agent-selection', {
+            fetch('https://ectphyvfbkwaawtnzrlo.supabase.co/functions/v1/log-agent-selection', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdHBoeXZmYmt3YWF3dG56cmxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNTYzMDAsImV4cCI6MjA3MTYzMjMwMH0.X94YQtlWmFH3qoiVVpMOzIzJx81Nt4vvAyeCwpxLJAQ',
                     'Authorization': 'Bearer odia_prod_key_2024_atlas_lexi_v1'
                 },
                 body: JSON.stringify({
-                    agent_type: agentType,
+                    agent_id: getAgentId(agentType),
+                    source: 'web',
                     timestamp: new Date().toISOString(),
+                    properties: {
                     user_agent: navigator.userAgent,
                     referrer: document.referrer
+                    }
                 })
             }).catch(e => console.log('Analytics tracking failed:', e));
         }
