@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OrderVoice AI - Voice-Only Interface">
+  <title>OrderVoice AI - Voice Assistant</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Voice-only interface container */
+    #voice-interface {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.5s ease;
+    }
+
+    /* Character selection screen */
+    #character-selection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    #character-selection.hidden {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .selection-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .characters-container {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .character-card {
+      width: 280px;
+      height: 350px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 30px;
+    }
+
+    .character-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .character-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .character-avatar::before {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .character-card.austyn .character-avatar {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    }
+
+    .character-card.joslyn .character-avatar {
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+    }
+
+    .character-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .character-description {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Voice conversation screen */
+    #voice-conversation {
+      display: none;
+      opacity: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s ease;
+    }
+
+    #voice-conversation.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Voice circle visualization */
+    .voice-circle-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .voice-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Pulse rings */
+    .pulse-ring {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      animation: pulse 2s infinite;
+      opacity: 0;
+    }
+
+    .pulse-ring:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .pulse-ring:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    /* Listening state */
+    .voice-circle.listening {
+      animation: breathe 2s infinite ease-in-out;
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Speaking state */
+    .voice-circle.speaking {
+      animation: bounce 0.5s infinite ease-in-out;
+      box-shadow: 0 20px 60px rgba(34, 197, 94, 0.6);
+    }
+
+    /* Status text */
+    .status-text {
+      margin-top: 40px;
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      text-align: center;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+
+    /* Waveform visualization */
+    .waveform-container {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      margin-top: 40px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .waveform-container.active {
+      opacity: 1;
+    }
+
+    .wave-bar {
+      width: 8px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 4px;
+      animation: wave 1s infinite ease-in-out;
+    }
+
+    .wave-bar:nth-child(1) { animation-delay: 0s; }
+    .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(8) { animation-delay: 0.1s; }
+
+    /* End conversation button */
+    .end-button {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 18px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      background: rgba(239, 68, 68, 0.9);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .end-button:hover {
+      background: rgba(220, 38, 38, 1);
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Change voice button */
+    .change-voice-button {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .change-voice-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.95);
+      }
+    }
+
+    @keyframes wave {
+      0%, 100% {
+        height: 20px;
+      }
+      50% {
+        height: 60px;
+      }
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .selection-title {
+        font-size: 24px;
+        padding: 0 20px;
+      }
+
+      .characters-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .character-card {
+        width: 240px;
+        height: 300px;
+        padding: 20px;
+      }
+
+      .character-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+      }
+
+      .character-avatar::before {
+        width: 120px;
+        height: 120px;
+      }
+
+      .character-name {
+        font-size: 24px;
+      }
+
+      .character-description {
+        font-size: 14px;
+      }
+
+      .voice-circle-container {
+        width: 250px;
+        height: 250px;
+      }
+
+      .voice-circle {
+        width: 160px;
+        height: 160px;
+        font-size: 64px;
+      }
+
+      .pulse-ring {
+        width: 160px;
+        height: 160px;
+      }
+
+      .status-text {
+        font-size: 20px;
+        padding: 0 30px;
+      }
+
+      .end-button {
+        bottom: 40px;
+        padding: 15px 35px;
+        font-size: 16px;
+      }
+
+      .change-voice-button {
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Loading state */
+    .loading {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Voice Interface -->
+  <div id="voice-interface">
+
+    <!-- Character Selection Screen -->
+    <div id="character-selection">
+      <div class="selection-title">Choose Your Voice Assistant</div>
+
+      <div class="characters-container">
+        <!-- Austyn (Male) -->
+        <div class="character-card austyn" data-character="austyn">
+          <div class="character-avatar">👨🏿</div>
+          <div class="character-name">Austyn</div>
+          <div class="character-description">Confident and professional male voice</div>
+        </div>
+
+        <!-- Joslyn (Female) -->
+        <div class="character-card joslyn" data-character="joslyn">
+          <div class="character-avatar">👩🏿</div>
+          <div class="character-name">Joslyn</div>
+          <div class="character-description">Warm and engaging female voice</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Conversation Screen -->
+    <div id="voice-conversation">
+      <button class="change-voice-button" id="change-voice-btn">Change Voice</button>
+
+      <div class="voice-circle-container">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="voice-circle" id="voice-circle">
+          <span id="voice-emoji">👨🏿</span>
+        </div>
+      </div>
+
+      <div class="status-text" id="status-text">Tap to speak</div>
+
+      <div class="waveform-container" id="waveform">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+
+      <button class="end-button" id="end-conversation-btn">End Conversation</button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <div>Initializing...</div>
+    </div>
+  </div>
+
+  <!-- Include configuration and modules -->
+  <script src="config.js"></script>
+  <script src="minimax-api.js"></script>
+  <script src="voice-activity-detection.js"></script>
+  <script src="voice-streaming-orchestrator.js"></script>
+
+  <!-- Main application script -->
+  <script>
+    // Global state
+    let orchestrator = null;
+    let currentCharacter = null;
+    let isConversationActive = false;
+
+    // DOM elements
+    const characterSelection = document.getElementById('character-selection');
+    const voiceConversation = document.getElementById('voice-conversation');
+    const voiceCircle = document.getElementById('voice-circle');
+    const voiceEmoji = document.getElementById('voice-emoji');
+    const statusText = document.getElementById('status-text');
+    const waveform = document.getElementById('waveform');
+    const loading = document.getElementById('loading');
+    const voiceInterface = document.getElementById('voice-interface');
+
+    // Character cards
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const character = card.dataset.character;
+        selectCharacter(character);
+      });
+    });
+
+    // Change voice button
+    document.getElementById('change-voice-btn').addEventListener('click', () => {
+      endConversation();
+      showCharacterSelection();
+    });
+
+    // End conversation button
+    document.getElementById('end-conversation-btn').addEventListener('click', () => {
+      endConversation();
+      showCharacterSelection();
+    });
+
+    /**
+     * Select character and start conversation
+     */
+    async function selectCharacter(character) {
+      try {
+        currentCharacter = character;
+
+        // Show loading
+        characterSelection.classList.add('hidden');
+        loading.classList.add('active');
+
+        // Update interface colors
+        const voice = MINIMAX_CONFIG.voices[character];
+        voiceInterface.style.background = `linear-gradient(135deg, ${voice.color} 0%, ${adjustColor(voice.color, 20)} 100%)`;
+        voiceEmoji.textContent = voice.emoji;
+
+        // Initialize orchestrator
+        orchestrator = new VoiceStreamingOrchestrator(MINIMAX_CONFIG);
+
+        // Set up event handlers
+        setupOrchestratorEvents();
+
+        // Initialize with selected voice
+        await orchestrator.initialize(character);
+
+        // Hide loading, show conversation
+        loading.classList.remove('active');
+        voiceConversation.classList.add('active');
+
+        // Start conversation
+        await orchestrator.start();
+        isConversationActive = true;
+
+        statusText.textContent = 'Listening...';
+        voiceCircle.classList.add('listening');
+
+      } catch (error) {
+        console.error('Error starting conversation:', error);
+        loading.classList.remove('active');
+        alert('Error starting conversation. Please check microphone permissions and try again.');
+        showCharacterSelection();
+      }
+    }
+
+    /**
+     * Set up orchestrator event handlers
+     */
+    function setupOrchestratorEvents() {
+      // User speech events
+      orchestrator.on('user_speech_start', () => {
+        console.log('User started speaking');
+        voiceCircle.classList.remove('listening');
+        voiceCircle.classList.add('speaking');
+        statusText.textContent = 'Listening...';
+        waveform.classList.add('active');
+      });
+
+      orchestrator.on('user_speech_end', () => {
+        console.log('User stopped speaking');
+        voiceCircle.classList.remove('speaking');
+        voiceCircle.classList.add('listening');
+        waveform.classList.remove('active');
+      });
+
+      orchestrator.on('user_message', (message) => {
+        console.log('User message:', message);
+        statusText.textContent = 'Processing...';
+      });
+
+      // AI speech events
+      orchestrator.on('ai_speech_start', () => {
+        console.log('AI started speaking');
+        statusText.textContent = 'Speaking...';
+        voiceCircle.classList.remove('listening');
+        waveform.classList.add('active');
+      });
+
+      orchestrator.on('ai_speech_end', () => {
+        console.log('AI finished speaking');
+        statusText.textContent = 'Listening...';
+        voiceCircle.classList.add('listening');
+        waveform.classList.remove('active');
+      });
+
+      // Volume visualization
+      orchestrator.on('volume', (volume) => {
+        const scale = 1 + (volume * 0.3);
+        voiceCircle.style.transform = `scale(${scale})`;
+      });
+
+      // Interruption
+      orchestrator.on('ai_interrupted', () => {
+        console.log('AI interrupted');
+        statusText.textContent = 'Listening...';
+        waveform.classList.remove('active');
+      });
+
+      // Errors
+      orchestrator.on('error', (error) => {
+        console.error('Orchestrator error:', error);
+        statusText.textContent = 'Error occurred';
+      });
+    }
+
+    /**
+     * End conversation
+     */
+    function endConversation() {
+      if (orchestrator) {
+        orchestrator.cleanup();
+        orchestrator = null;
+      }
+      isConversationActive = false;
+
+      voiceConversation.classList.remove('active');
+      voiceCircle.classList.remove('listening', 'speaking');
+      waveform.classList.remove('active');
+      statusText.textContent = 'Tap to speak';
+    }
+
+    /**
+     * Show character selection
+     */
+    function showCharacterSelection() {
+      characterSelection.classList.remove('hidden');
+      voiceConversation.classList.remove('active');
+      voiceInterface.style.background = 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)';
+    }
+
+    /**
+     * Adjust color brightness
+     */
+    function adjustColor(color, percent) {
+      const num = parseInt(color.replace('#', ''), 16);
+      const amt = Math.round(2.55 * percent);
+      const R = (num >> 16) + amt;
+      const G = (num >> 8 & 0x00FF) + amt;
+      const B = (num & 0x0000FF) + amt;
+      return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255))
+        .toString(16).slice(1);
+    }
+
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && isConversationActive) {
+        // Page hidden, pause conversation
+        if (orchestrator) {
+          orchestrator.stop();
+        }
+      } else if (!document.hidden && isConversationActive) {
+        // Page visible, resume conversation
+        if (orchestrator) {
+          orchestrator.start();
+        }
+      }
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (orchestrator) {
+        orchestrator.cleanup();
+      }
+    });
+  </script>
+</body>
+</html>
