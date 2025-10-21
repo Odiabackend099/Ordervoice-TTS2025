@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ordervoice.ai/sitemap.xml
+
+# Optimize crawling
+Crawl-delay: 1
+
+# Disallow admin/backend pages if any exist in future
+Disallow: /admin/
+Disallow: /private/
+
