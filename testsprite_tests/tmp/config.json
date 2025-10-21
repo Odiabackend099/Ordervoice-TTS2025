@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8000",
+  "executionArgs": {
+    "projectName": "ordervoice.odia.dev",
+    "projectPath": "/Users/odiadev/Desktop/ordervoice.odia.dev",
+    "testIds": [],
+    "additionalInstruction": "",
+    "envs": {
+      "API_KEY": "sk-user-LedWCiZywtwtT8sFsoaNbSXb73xHk0c4WEXwUcZ1CSmsS3j0wPpZcaVd9ZjQWL-igc5qKhWMXMGVoIzBDjSmguUhtIed-5EiIgA2Vha3g9t2jjUJvasYPtzBtj0UmJiYKu4"
+    }
+  },
+  "proxy": "http://d4fad0d5-13f9-4b9b-9bb5-37d405f35873:2guTofOrcAT19vju1dylEkkAZeogj9Tb@tun.testsprite.com:8080"
+}

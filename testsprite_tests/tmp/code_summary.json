@@ -1,0 +1,98 @@
+{
+  "tech_stack": [
+    "HTML5",
+    "CSS3",
+    "JavaScript (ES6+)",
+    "Deepgram Speech-to-Text API",
+    "Groq LLM API",
+    "MiniMax Text-to-Speech API",
+    "WebRTC",
+    "Web Audio API",
+    "Vercel (Hosting)",
+    "Git/GitHub (Version Control)"
+  ],
+  "features": [
+    {
+      "name": "Landing Page",
+      "description": "Main homepage with hero section, problems/solutions, how it works, pricing preview, testimonials, team section, and footer. Fully localized for Nigerian market with ₦ pricing.",
+      "files": ["index.html"]
+    },
+    {
+      "name": "Pricing Page",
+      "description": "Detailed pricing tiers (Starter ₦40,000/mo, Pro ₦95,000/mo, Business ₦220,000/mo) with feature comparison, FAQs, and CTAs for Nigerian businesses.",
+      "files": ["pricing.html"]
+    },
+    {
+      "name": "Demo Page",
+      "description": "Interactive demo page with WhatsApp demo CTA, call demo number, example scenarios, and explanation of how the AI receptionist works.",
+      "files": ["demo.html"]
+    },
+    {
+      "name": "Contact & Trial Signup",
+      "description": "Lead capture form with industry selection, business info collection, WhatsApp direct link, and contact information for ODIADEV AI LTD.",
+      "files": ["contact.html"]
+    },
+    {
+      "name": "Voice Streaming Orchestrator",
+      "description": "Core system that coordinates ultra-low latency voice streaming between Deepgram STT, Groq LLM, and MiniMax TTS. Handles real-time audio processing and streaming.",
+      "files": ["voice-streaming-orchestrator.js", "config.js"]
+    },
+    {
+      "name": "Deepgram Speech-to-Text Integration",
+      "description": "Real-time speech recognition using Deepgram API with WebSocket streaming. Converts user voice input to text with low latency.",
+      "files": ["deepgram-stt.js", "config.js"]
+    },
+    {
+      "name": "Groq LLM Processing",
+      "description": "Language model integration using Groq API (Llama 3.3 70B) for intelligent conversation handling, lead qualification, and appointment booking logic.",
+      "files": ["groq-llm.js", "config.js"]
+    },
+    {
+      "name": "MiniMax Text-to-Speech",
+      "description": "High-quality voice synthesis using MiniMax TTS API. Converts AI responses to natural-sounding Nigerian English speech.",
+      "files": ["minimax-api.js", "config.js"]
+    },
+    {
+      "name": "Voice Activity Detection (VAD)",
+      "description": "Detects when user starts/stops speaking to enable natural conversation flow, reduce interruptions, and optimize audio processing.",
+      "files": ["voice-activity-detection.js", "config.js"]
+    },
+    {
+      "name": "Audio Visualizer",
+      "description": "Real-time audio waveform visualization for both user input and AI response. Provides visual feedback during voice interactions.",
+      "files": ["audio-visualizer.js"]
+    },
+    {
+      "name": "Chat Widget",
+      "description": "Embeddable chat widget for websites. Includes knowledge base, message history, typing indicators, and seamless integration with voice streaming.",
+      "files": ["chat-widget.js", "chat-widget-knowledge.js", "widget-init.html"]
+    },
+    {
+      "name": "Configuration Management",
+      "description": "Centralized configuration system for API keys, model settings, VAD parameters, and streaming settings. Supports environment variables for security.",
+      "files": ["config.js", "config-loader.js", "config-local.js"]
+    },
+    {
+      "name": "Voice Streaming Demo UI",
+      "description": "Standalone demo interface for testing voice streaming functionality with start/stop controls, status indicators, and audio visualization.",
+      "files": ["voice-streaming-demo.html", "voice-ui.html"]
+    },
+    {
+      "name": "SEO Optimization",
+      "description": "Complete SEO setup with meta tags, Open Graph, Twitter Cards, Schema.org structured data, sitemap, and robots.txt for Nigerian market targeting.",
+      "files": ["index.html", "pricing.html", "demo.html", "contact.html", "sitemap.xml", "robots.txt"]
+    },
+    {
+      "name": "Security Configuration",
+      "description": "Secure API key management using environment variables, .gitignore for sensitive files, and security headers configuration for Vercel deployment.",
+      "files": ["config.js", "vercel.json", "SECURITY.md"]
+    },
+    {
+      "name": "TTS Testing Interface",
+      "description": "Testing interface for validating MiniMax TTS functionality with various text inputs and voice settings.",
+      "files": ["test-tts.html"]
+    }
+  ]
+}
+
+

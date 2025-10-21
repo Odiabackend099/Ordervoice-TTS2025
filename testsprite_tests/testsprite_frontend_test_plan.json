@@ -1,0 +1,457 @@
+[
+  {
+    "id": "TC001",
+    "title": "Landing Page Localization and Content Display",
+    "description": "Verify that the Landing Page loads correctly with all localized Nigerian content, including Nigerian English text, pricing displayed in Nigerian Naira (₦), testimonials, and team information.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Landing Page"
+      },
+      {
+        "type": "assertion",
+        "description": "Check all text content is in Nigerian English and culturally localized"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify pricing is displayed correctly in Nigerian Naira (₦)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify testimonials section is present with expected testimonial content"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify team section is present with accurate team member details"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Pricing Page Tier Details and CTAs",
+    "description": "Ensure the Pricing Page displays correct tier-based plans (Starter, Pro, Business) with accurate Nigerian Naira (₦) prices and functional call-to-action buttons.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Pricing Page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Starter plan is listed at ₦40,000/mo with correct feature list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Pro plan is listed at ₦95,000/mo with correct feature list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Business plan is listed at ₦220,000/mo with correct feature list"
+      },
+      {
+        "type": "assertion",
+        "description": "Check FAQs section is present and displays relevant information"
+      },
+      {
+        "type": "assertion",
+        "description": "Test that CTAs (e.g., subscribe or contact buttons) are clickable and initiate the expected workflow"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Demo Page Interactive Voice Receptionist",
+    "description": "Test interactive demo page functionality, verifying voice-based AI receptionist interactions including voice input, AI processing, and audio response playback.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Demo Page"
+      },
+      {
+        "type": "action",
+        "description": "Initiate voice interaction via microphone input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify real-time transcription text appears within 500 ms of spoken input"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm AI responses are generated accurately using Groq LLM with natural conversation flow"
+      },
+      {
+        "type": "assertion",
+        "description": "Validate MiniMax TTS converts responses to clear Nigerian English speech without lag"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify voice activity detection accurately detects speech start and stop events, minimizing false positives"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Contact and Trial Signup Form Submission",
+    "description": "Validate the Contact and Trial Signup form captures business and industry information correctly, and the direct WhatsApp link functions properly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Contact and Trial Signup Page"
+      },
+      {
+        "type": "action",
+        "description": "Fill out all required fields with valid business and industry information"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that submission is successful and confirmation is shown"
+      },
+      {
+        "type": "action",
+        "description": "Click the WhatsApp direct link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the WhatsApp link opens in a new tab/window and initiates correct contact"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Voice Streaming Orchestrator Integration Flow",
+    "description": "Test the end-to-end real-time voice streaming orchestration among Deepgram STT, Groq LLM, and MiniMax TTS, ensuring ultra-low latency and accurate audio processing.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Start voice streaming through the orchestrator with live input"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm user audio is streamed with latency under 500 milliseconds to Deepgram STT"
+      },
+      {
+        "type": "assertion",
+        "description": "Validate Deepgram STT transcribes speech to text accurately in real-time"
+      },
+      {
+        "type": "assertion",
+        "description": "Check transcription text is sent to Groq LLM for processing and lead qualification"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Groq LLM generates intelligent conversational responses"
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure responses are sent to MiniMax TTS and converted to natural Nigerian English speech"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm synthesized speech is played back with minimal delay, completing the loop"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Voice Activity Detection Accuracy",
+    "description": "Verify that Voice Activity Detection (VAD) correctly and promptly detects when the user starts and stops speaking with minimal false positives or missed speech segments.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Start voice input and speak multiple phrases with natural pauses"
+      },
+      {
+        "type": "assertion",
+        "description": "Validate that VAD detects speech start events immediately as user begins speaking"
+      },
+      {
+        "type": "assertion",
+        "description": "Validate that VAD detects speech stop events immediately after user finishes speaking"
+      },
+      {
+        "type": "action",
+        "description": "Remain silent and observe if VAD produces false positives"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no false positives occur during silence or ambient noise"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Audio Visualizer Synchronization",
+    "description": "Test that the real-time Audio Visualizer displays accurate and synchronized waveform feedback for both user voice input and AI synthesized output.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Initiate a voice conversation with the AI receptionist"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify waveform visualization responds dynamically and reflects user voice amplitude and timing"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify waveform visualization also animates in sync with AI-generated speech playback"
+      },
+      {
+        "type": "action",
+        "description": "Introduce variable speech volumes and pauses"
+      },
+      {
+        "type": "assertion",
+        "description": "Check the visualizer accurately reflects changes in input volume and pauses"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Chat Widget Functionality and Integration",
+    "description": "Verify that the embeddable Chat Widget works properly with knowledge base queries, maintains message history, shows typing indicators, and integrates with voice streaming smoothly.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Embed the Chat Widget on a webpage and open it"
+      },
+      {
+        "type": "action",
+        "description": "Send text query to Chat Widget and verify knowledge base responses"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that query responses are relevant and accurate per knowledge base"
+      },
+      {
+        "type": "action",
+        "description": "Send additional messages and verify that message history is retained and displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that typing indicators appear correctly when AI is preparing a response"
+      },
+      {
+        "type": "action",
+        "description": "Initiate voice streaming interaction within the widget"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify voice streaming works end-to-end with synchronized transcription and audio playback inside the widget"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Configuration Management Security and Environment Setup",
+    "description": "Ensure centralized Configuration Management securely stores API keys and environment-specific settings without exposure, and supports parameter customization.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Inspect configuration files and environment variables setup"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that API keys are not present in public repositories or frontend code"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm .gitignore includes sensitive config files"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to modify model settings and VAD parameters in the config"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify changes take effect without error and do not expose sensitive information"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "SEO Optimization Verification",
+    "description": "Validate that SEO elements such as meta tags, Open Graph data, Twitter Cards, structured schema.org data, sitemap.xml, and robots.txt are properly implemented targeting the Nigerian market.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Access the source code of all public-facing pages (Landing, Pricing, Demo, Contact)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify presence and correctness of meta tags relevant to Nigerian audience"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that Open Graph and Twitter Card metadata exist and are well-formed"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm schema.org structured data is included and valid"
+      },
+      {
+        "type": "action",
+        "description": "Fetch sitemap.xml and verify URL listings correspond to public pages"
+      },
+      {
+        "type": "action",
+        "description": "Fetch robots.txt and ensure proper rules are applied"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Security Headers and Deployment Configuration",
+    "description": "Verify security configuration is applied properly through deployment settings including API key management, .gitignore usage, and security headers in Vercel deployment.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Review vercel.json and SECURITY.md for security header rules and deployment best practices"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify security headers are served with all public pages (e.g., Content-Security-Policy, X-Frame-Options)"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that API keys are injected only at server or environment level, not exposed on client"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access config files excluded by .gitignore via public URL"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that sensitive configuration files are not accessible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "MiniMax TTS Testing Interface Validation",
+    "description": "Validate the TTS Testing Interface produces natural, intelligible Nigerian English speech outputs for diverse text inputs and voice settings without errors.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the TTS Testing Interface"
+      },
+      {
+        "type": "action",
+        "description": "Input a variety of text samples including short phrases, long sentences, and colloquial Nigerian English"
+      },
+      {
+        "type": "action",
+        "description": "Use different voice settings and submit for synthesis"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm TTS outputs clear, natural-sounding Nigerian English speech each time"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no synthesis errors occur and audio playback is smooth"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Error Handling for Speech Recognition Failures",
+    "description": "Test system behavior when Deepgram STT fails or delivers errors, verifying graceful error handling and user notification.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate Deepgram STT WebSocket disconnection or API error during voice input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify system detects failure and notifies user with understandable error message"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that system attempts automatic retry or fallbacks smoothly"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no unhandled exceptions or crashes happen"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Edge Case: Handling No Speech Input",
+    "description": "Verify system response when user activates voice input but does not speak or the audio input is silent.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Start voice interaction and remain silent for a set period"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify voice activity detection correctly identifies no speech"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that the system does not send unnecessary requests to STT or LLM"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user receives prompt or guidance after timeout requesting them to speak"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Performance under High Load",
+    "description": "Test system stability, latency, and accuracy under simulated high user load and concurrent voice interactions.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate multiple concurrent users using voice interactions via the Demo Page or API"
+      },
+      {
+        "type": "assertion",
+        "description": "Monitor latency of speech-to-text, LLM response, and text-to-speech processing is under defined thresholds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no request timeouts, failures, or inaccurate transcriptions/responses occur due to load"
+      },
+      {
+        "type": "assertion",
+        "description": "Check server and client memory/cpu usage remains within safe limits"
+      }
+    ]
+  }
+]

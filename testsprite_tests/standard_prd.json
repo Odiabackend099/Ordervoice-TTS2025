@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "project": "ODIADEV AI Nigerian Voice Receptionist",
+    "date": "2025-10-20",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "ODIADEV AI Nigerian Voice Receptionist is an AI-powered voice-based receptionist solution designed specifically for Nigerian businesses. It integrates advanced speech-to-text, language model processing, and text-to-speech technologies to provide intelligent, natural, and localized voice interactions for lead qualification, appointment booking, and customer engagement.",
+  "core_goals": [
+    "Provide ultra-low latency, real-time voice interaction for Nigerian businesses.",
+    "Enable natural conversation flow with voice activity detection and high-quality speech synthesis in Nigerian English.",
+    "Offer a comprehensive AI receptionist that can handle lead qualification and appointment booking using advanced LLM capabilities.",
+    "Deliver a localized user experience with pricing, UI, and language tailored to the Nigerian market.",
+    "Ensure secure and maintainable deployment with centralized configuration and robust security practices."
+  ],
+  "key_features": [
+    "Landing Page with market-specific localized content, pricing in Nigerian Naira (₦), testimonials, and team information.",
+    "Detailed Pricing Page with tier-based plans (Starter, Pro, Business) tailored for Nigerian businesses.",
+    "Interactive Demo Page showcasing the AI receptionist capabilities with live demos and example scenarios.",
+    "Contact and Trial Signup forms with business information capture and direct WhatsApp link.",
+    "Voice Streaming Orchestrator that manages real-time ultra-low latency audio streaming between Deepgram STT, Groq LLM, and MiniMax TTS.",
+    "Deepgram Speech-to-Text API integration for real-time voice transcription with WebSocket streaming.",
+    "Groq LLM (Llama 3.3 70B) integration for intelligent conversational processing, lead qualification, and appointment logic.",
+    "MiniMax Text-to-Speech API for natural-sounding Nigerian English voice responses.",
+    "Voice Activity Detection to enable seamless conversation flow and reduce unnecessary processing.",
+    "Real-time Audio Visualizer providing waveform feedback during voice interactions.",
+    "Embeddable Chat Widget with knowledge base, message history, typing indicators, and voice streaming integration.",
+    "Centralized Configuration Management for secure API key storage and environment-specific settings.",
+    "SEO Optimization targeting the Nigerian market with meta tags, Open Graph, Twitter Cards, and structured data.",
+    "Security Configuration ensuring secure API key management, .gitignore usage for sensitive files, and deployment security headers."
+  ],
+  "user_flow_summary": [
+    "User visits Landing Page to understand product value and pricing.",
+    "User navigates to Pricing Page to evaluate subscription options and FAQs.",
+    "User explores Demo Page to interact with AI receptionist via voice or calls.",
+    "User fills Contact & Trial Signup form to initiate service onboarding or contacts via WhatsApp link.",
+    "Voice Streaming Orchestrator manages user voice input, converting speech to text, processing with Groq LLM, then synthesizing AI's voice with MiniMax TTS, providing real-time responses.",
+    "Voice Activity Detection automatically detects speaking activity to facilitate natural turn-taking in conversations.",
+    "Chat Widget supports text and voice interactions providing knowledge base answers and maintaining message history.",
+    "Administrator or developer manages API keys and model parameters via Configuration Management for security and customization."
+  ],
+  "validation_criteria": [
+    "Successful real-time voice transcription with latency under 500 ms using Deepgram STT.",
+    "Accurate conversational responses and lead qualification handled by Groq LLM with at least 90% user satisfaction in demos.",
+    "Natural, intelligible Nigerian English speech output via MiniMax TTS verified through internal TTS Testing Interface.",
+    "Voice Activity Detection correctly detects speech start/stop events with minimal false positives.",
+    "Audio Visualizer displays real-time waveforms synchronized with voice input and output.",
+    "Landing and Pricing pages show consistent localized Nigerian content and pricing in Naira (₦).",
+    "Demo interactions demonstrate smooth, lag-free voice conversation orbased scenario testing.",
+    "Secure configuration with no exposure of API keys or sensitive files in public repos.",
+    "Chat Widget integrates seamlessly on websites, maintaining message history and typing indicators properly."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "HTML5",
+      "CSS3",
+      "JavaScript (ES6+)",
+      "Deepgram Speech-to-Text API",
+      "Groq LLM API",
+      "MiniMax Text-to-Speech API",
+      "WebRTC",
+      "Web Audio API",
+      "Vercel (Hosting)",
+      "Git/GitHub (Version Control)"
+    ],
+    "features": [
+      {
+        "name": "Landing Page",
+        "description": "Main homepage with hero section, problems/solutions, how it works, pricing preview, testimonials, team section, and footer. Fully localized for Nigerian market with ₦ pricing.",
+        "files": [
+          "index.html"
+        ]
+      },
+      {
+        "name": "Pricing Page",
+        "description": "Detailed pricing tiers (Starter ₦40,000/mo, Pro ₦95,000/mo, Business ₦220,000/mo) with feature comparison, FAQs, and CTAs for Nigerian businesses.",
+        "files": [
+          "pricing.html"
+        ]
+      },
+      {
+        "name": "Demo Page",
+        "description": "Interactive demo page with WhatsApp demo CTA, call demo number, example scenarios, and explanation of how the AI receptionist works.",
+        "files": [
+          "demo.html"
+        ]
+      },
+      {
+        "name": "Contact & Trial Signup",
+        "description": "Lead capture form with industry selection, business info collection, WhatsApp direct link, and contact information for ODIADEV AI LTD.",
+        "files": [
+          "contact.html"
+        ]
+      },
+      {
+        "name": "Voice Streaming Orchestrator",
+        "description": "Core system that coordinates ultra-low latency voice streaming between Deepgram STT, Groq LLM, and MiniMax TTS. Handles real-time audio processing and streaming.",
+        "files": [
+          "voice-streaming-orchestrator.js",
+          "config.js"
+        ]
+      },
+      {
+        "name": "Deepgram Speech-to-Text Integration",
+        "description": "Real-time speech recognition using Deepgram API with WebSocket streaming. Converts user voice input to text with low latency.",
+        "files": [
+          "deepgram-stt.js",
+          "config.js"
+        ]
+      },
+      {
+        "name": "Groq LLM Processing",
+        "description": "Language model integration using Groq API (Llama 3.3 70B) for intelligent conversation handling, lead qualification, and appointment booking logic.",
+        "files": [
+          "groq-llm.js",
+          "config.js"
+        ]
+      },
+      {
+        "name": "MiniMax Text-to-Speech",
+        "description": "High-quality voice synthesis using MiniMax TTS API. Converts AI responses to natural-sounding Nigerian English speech.",
+        "files": [
+          "minimax-api.js",
+          "config.js"
+        ]
+      },
+      {
+        "name": "Voice Activity Detection (VAD)",
+        "description": "Detects when user starts/stops speaking to enable natural conversation flow, reduce interruptions, and optimize audio processing.",
+        "files": [
+          "voice-activity-detection.js",
+          "config.js"
+        ]
+      },
+      {
+        "name": "Audio Visualizer",
+        "description": "Real-time audio waveform visualization for both user input and AI response. Provides visual feedback during voice interactions.",
+        "files": [
+          "audio-visualizer.js"
+        ]
+      },
+      {
+        "name": "Chat Widget",
+        "description": "Embeddable chat widget for websites. Includes knowledge base, message history, typing indicators, and seamless integration with voice streaming.",
+        "files": [
+          "chat-widget.js",
+          "chat-widget-knowledge.js",
+          "widget-init.html"
+        ]
+      },
+      {
+        "name": "Configuration Management",
+        "description": "Centralized configuration system for API keys, model settings, VAD parameters, and streaming settings. Supports environment variables for security.",
+        "files": [
+          "config.js",
+          "config-loader.js",
+          "config-local.js"
+        ]
+      },
+      {
+        "name": "Voice Streaming Demo UI",
+        "description": "Standalone demo interface for testing voice streaming functionality with start/stop controls, status indicators, and audio visualization.",
+        "files": [
+          "voice-streaming-demo.html",
+          "voice-ui.html"
+        ]
+      },
+      {
+        "name": "SEO Optimization",
+        "description": "Complete SEO setup with meta tags, Open Graph, Twitter Cards, Schema.org structured data, sitemap, and robots.txt for Nigerian market targeting.",
+        "files": [
+          "index.html",
+          "pricing.html",
+          "demo.html",
+          "contact.html",
+          "sitemap.xml",
+          "robots.txt"
+        ]
+      },
+      {
+        "name": "Security Configuration",
+        "description": "Secure API key management using environment variables, .gitignore for sensitive files, and security headers configuration for Vercel deployment.",
+        "files": [
+          "config.js",
+          "vercel.json",
+          "SECURITY.md"
+        ]
+      },
+      {
+        "name": "TTS Testing Interface",
+        "description": "Testing interface for validating MiniMax TTS functionality with various text inputs and voice settings.",
+        "files": [
+          "test-tts.html"
+        ]
+      }
+    ]
+  }
+}
