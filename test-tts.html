@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Test - MiniMax Voice Synthesis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .status {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #cbd5e0;
+        }
+
+        .status-dot.connected {
+            background: #48bb78;
+            box-shadow: 0 0 10px rgba(72, 187, 120, 0.5);
+        }
+
+        .status-dot.active {
+            background: #4299e1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .voice-select {
+            margin-bottom: 20px;
+        }
+
+        .voice-select label {
+            display: block;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .voice-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .voice-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .voice-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .voice-btn.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .voice-emoji {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .text-input {
+            margin-bottom: 20px;
+        }
+
+        .text-input label {
+            display: block;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .result pre {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        .error {
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .success {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            color: #22543d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .metric {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #718096;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 TTS Test</h1>
+        <p class="subtitle">MiniMax Voice Synthesis Test</p>
+
+        <!-- Status -->
+        <div class="status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Not connected</span>
+        </div>
+
+        <!-- Error/Success Messages -->
+        <div class="error" id="errorMsg"></div>
+        <div class="success" id="successMsg"></div>
+
+        <!-- Voice Selection -->
+        <div class="voice-select">
+            <label>Select Voice:</label>
+            <div class="voice-buttons">
+                <div class="voice-btn active" data-voice="austyn">
+                    <div class="voice-emoji">👨🏿</div>
+                    <div><strong>Austyn</strong></div>
+                    <div style="font-size: 12px; color: #718096;">Male</div>
+                </div>
+                <div class="voice-btn" data-voice="joslyn">
+                    <div class="voice-emoji">👩🏿</div>
+                    <div><strong>Joslyn</strong></div>
+                    <div style="font-size: 12px; color: #718096;">Female</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Input -->
+        <div class="text-input">
+            <label>Text to Speak:</label>
+            <textarea id="textInput" placeholder="Enter text to convert to speech...">Hello! Welcome to OrderVoice. This is a test of our ultra-low latency text-to-speech system powered by MiniMax.</textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button class="btn btn-primary" id="testBtn">
+                🎵 Test TTS
+            </button>
+            <button class="btn btn-secondary" id="stopBtn" disabled>
+                ⏹️ Stop
+            </button>
+        </div>
+
+        <!-- Result -->
+        <div class="result" id="result">
+            <h3>Test Results:</h3>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" id="connectionTime">--</div>
+                    <div class="metric-label">Connection (ms)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="responseTime">--</div>
+                    <div class="metric-label">Response (ms)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="audioTime">--</div>
+                    <div class="metric-label">Audio Play (ms)</div>
+                </div>
+            </div>
+            <pre id="resultDetails"></pre>
+        </div>
+    </div>
+
+    <!-- Include Dependencies -->
+    <script src="config.js"></script>
+    <script src="minimax-api.js"></script>
+
+    <script>
+        let minimax = null;
+        let selectedVoice = 'austyn';
+        let startTime = 0;
+
+        // DOM elements
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const testBtn = document.getElementById('testBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const textInput = document.getElementById('textInput');
+        const result = document.getElementById('result');
+        const resultDetails = document.getElementById('resultDetails');
+        const connectionTime = document.getElementById('connectionTime');
+        const responseTime = document.getElementById('responseTime');
+        const audioTime = document.getElementById('audioTime');
+
+        // Voice selection
+        document.querySelectorAll('.voice-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.voice-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedVoice = btn.dataset.voice;
+                showSuccess(`Voice changed to ${selectedVoice}`);
+            });
+        });
+
+        // Initialize TTS
+        async function initializeTTS() {
+            try {
+                showStatus('Connecting...', 'active');
+                const initStart = Date.now();
+
+                // Initialize MiniMax
+                minimax = new MiniMaxAPI(STREAMING_CONFIG);
+
+                // Set up event listeners
+                setupEventListeners();
+
+                // Connect
+                const voiceId = STREAMING_CONFIG.voices[selectedVoice].id;
+                await minimax.connect(voiceId);
+
+                const initTime = Date.now() - initStart;
+                connectionTime.textContent = initTime;
+
+                showStatus('Connected', 'connected');
+                showSuccess(`✅ TTS initialized successfully in ${initTime}ms`);
+                testBtn.disabled = false;
+
+                return true;
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError(`Failed to initialize: ${error.message}`);
+                showStatus('Connection failed', '');
+                return false;
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            minimax.on('connected', () => {
+                console.log('MiniMax connected');
+            });
+
+            minimax.on('audio_start', () => {
+                console.log('Audio playback started');
+                audioTime.textContent = Date.now() - startTime;
+                stopBtn.disabled = false;
+            });
+
+            minimax.on('audio_end', () => {
+                console.log('Audio playback ended');
+                stopBtn.disabled = true;
+                showSuccess('✅ TTS playback completed successfully');
+            });
+
+            minimax.on('audio_chunk', (data) => {
+                console.log('Audio chunk received:', data.byteLength, 'bytes');
+            });
+
+            minimax.on('error', (error) => {
+                console.error('MiniMax error:', error);
+                showError(`Error: ${error.message || error}`);
+            });
+        }
+
+        // Test TTS
+        async function testTTS() {
+            const text = textInput.value.trim();
+
+            if (!text) {
+                showError('Please enter some text');
+                return;
+            }
+
+            if (!minimax || !minimax.isConnected()) {
+                const success = await initializeTTS();
+                if (!success) return;
+            }
+
+            try {
+                showStatus('Generating speech...', 'active');
+                startTime = Date.now();
+                testBtn.disabled = true;
+
+                // Stream text to speech
+                minimax.streamText(text);
+
+                responseTime.textContent = Date.now() - startTime;
+
+                result.classList.add('show');
+                resultDetails.textContent = JSON.stringify({
+                    voice: selectedVoice,
+                    textLength: text.length,
+                    timestamp: new Date().toISOString()
+                }, null, 2);
+
+            } catch (error) {
+                console.error('TTS error:', error);
+                showError(`TTS failed: ${error.message}`);
+                testBtn.disabled = false;
+            }
+        }
+
+        // Stop playback
+        function stopPlayback() {
+            if (minimax) {
+                minimax.interrupt();
+                showStatus('Connected', 'connected');
+                testBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        // UI helpers
+        function showStatus(text, state) {
+            statusText.textContent = text;
+            statusDot.className = 'status-dot';
+            if (state) statusDot.classList.add(state);
+        }
+
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+            setTimeout(() => errorMsg.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(message) {
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+            setTimeout(() => successMsg.classList.remove('show'), 5000);
+        }
+
+        // Event listeners
+        testBtn.addEventListener('click', testTTS);
+        stopBtn.addEventListener('click', stopPlayback);
+
+        // Auto-initialize on load
+        initializeTTS();
+    </script>
+</body>
+</html>
